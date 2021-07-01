@@ -1,47 +1,73 @@
-import * as http from 'http';
-import * as express from 'express';
-import * as RED from 'node-red';
+import { GraphQLServer } from 'graphql-yoga';
+import { Board, Pin, Sensor } from 'johnny-five';
+import jwt from 'jsonwebtoken';
+import * as socketio from 'socket.io';
 
-// Create an Express app
-let app = express();
+const board = new Board();
+let led: any;
+let sensor: Sensor;
+let ledState: boolean = false;
 
-// Add a simple route for static content served from 'public'
-app.use('/', express.static('public'));
+board.on('ready', () => {
+  led = new Pin(13);
+  sensor = new Sensor('A0');
+});
 
-// Create a server
-let server = http.createServer(app);
+const typeDefs = `
+  type Query {
+    pin: Boolean!
+  }
+`;
 
-// Create the settings object - see default settings.js file for other options
-let settings = {
-  httpAdminRoot: '/red',
-  httpNodeRoot: '/api',
-  uiPort: 4000,
-  uiHost: 'localhost',
-  userDir: './',
-  // adminAuth: {
-  //   type: '"credentials"',
-  //   users: [
-  //     {
-  //       username: 'string',
-  //       password: 'string',
-  //       permissions: '*',
-  //     },
-  //   ],
-  //  },
-
-  functionGlobalContext: {}, // enables global context
+const resolvers = {
+  Query: {
+    pin: (_: any, __: any, ___: any, ____: any) => {
+      if (led && ledState !== true) {
+        led.high();
+        ledState = true;
+        return true;
+      } else {
+        led?.low();
+        ledState = false;
+        return false;
+      }
+    },
+  },
 };
 
-// Initialise the runtime with a server and settings
-RED.init(server, settings);
+const server = new GraphQLServer({ typeDefs, resolvers });
+const io: socketio.Server = new socketio.Server();
 
-// Serve the editor UI from /red
-app.use(settings.httpAdminRoot, RED.httpAdmin);
+io.attach(5000, {
+  pingInterval: 10000,
+  pingTimeout: 5000,
+  cookie: false,
+});
 
-// Serve the http nodes UI from /api
-app.use(settings.httpNodeRoot, RED.httpNode);
+io.use((socket: any, next) => {
+  if (socket.handshake.query && socket.handshake.query.token) {
+    console.log('[handshake-token]', socket.handshake.query.token);
+    if (socket.handshake.query.token !== 'SECRET_KEY')
+      return next(new Error('Authentication error'));
+    next();
+  } else {
+    next(new Error('Authentication error'));
+  }
+}).on('connection', (socket: socketio.Socket) => {
+  console.log('[client] connected');
+  socket.emit('status', 'success');
 
-server.listen(4000);
+  setInterval(() => {
+    if (sensor) {
+      socket.emit('sensor', sensor.value);
+    }
+  }, 1000);
 
-// Start the runtime
-RED.start();
+  socket.on('disconnect', () => {
+    console.log('[client] disconnected');
+  });
+});
+
+server.start(() =>
+  console.log('[graphql] server is running on http://localhost:4000/')
+);
