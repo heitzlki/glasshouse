@@ -1,6 +1,5 @@
 import { GraphQLServer } from 'graphql-yoga';
 import { Board, Pin, Sensor } from 'johnny-five';
-import jwt from 'jsonwebtoken';
 import * as socketio from 'socket.io';
 
 const board = new Board();
@@ -15,13 +14,21 @@ board.on('ready', () => {
 
 const typeDefs = `
   type Query {
-    pin: Boolean!
+    default: Boolean
+  },
+  type Mutation {
+    led: Boolean!
   }
 `;
 
 const resolvers = {
   Query: {
-    pin: (_: any, __: any, ___: any, ____: any) => {
+    default: () => {
+      return false;
+    },
+  },
+  Mutation: {
+    led: () => {
       if (led && ledState !== true) {
         led.high();
         ledState = true;
