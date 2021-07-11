@@ -43,7 +43,12 @@ const resolvers = {
 };
 
 const server = new GraphQLServer({ typeDefs, resolvers });
-const io: socketio.Server = new socketio.Server();
+const io: socketio.Server = new socketio.Server({
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
 
 io.attach(5000, {
   pingInterval: 10000,
