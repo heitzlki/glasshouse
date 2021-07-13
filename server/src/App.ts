@@ -28,6 +28,7 @@ export default class App {
 
   startBoard() {
     this.board.init();
+    this.board.ready()
   }
 
   start() {
