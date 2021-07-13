@@ -4,6 +4,7 @@ export interface IProcessEnv {
   CLIENT_HOST: string;
   CLIENT_PORT: string;
   IO_PORT: number;
+  DB_CONNECT: string;
 }
 
 declare global {

@@ -36,6 +36,8 @@ const throwIfNot = <T, K extends keyof T>(
 };
 
 // Validate that we have our expected ENV variables defined!
-['PORT', 'HOST', 'CLIENT_PORT', 'CLIENT_HOST', 'IO_PORT'].forEach((v) => {
-  throwIfNot(process.env, v);
-});
+['PORT', 'HOST', 'CLIENT_PORT', 'CLIENT_HOST', 'IO_PORT', 'DB_CONNECT'].forEach(
+  (v) => {
+    throwIfNot(process.env, v);
+  }
+);

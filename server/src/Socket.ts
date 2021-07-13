@@ -9,16 +9,13 @@ type corsType = {
 };
 
 export default class Socket {
-  public io?: Server;
-  public cors?: corsType = {
-    origin: '*',
-    methods: ['GET', 'POST'],
-  };
-
-  constructor(io?: Server, cors?: corsType) {
-    this.io = io;
-    this.cors = cors;
-  }
+  constructor(
+    public io?: Server,
+    public cors: corsType = {
+      origin: '*',
+      methods: ['GET', 'POST'],
+    }
+  ) {}
 
   init() {
     this.io = new Server({ cors: this.cors });
