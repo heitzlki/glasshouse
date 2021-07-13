@@ -1,23 +1,25 @@
 import openInWeb from 'open';
 
 import Server from './Server';
+import Database from './Database';
 import Board from './Board';
 import Socket from './Socket';
 
 export default class App {
   constructor(
     public server: Server = new Server(),
+    public database: Database = new Database(),
     public board: Board = new Board(),
     public socket: Socket = new Socket()
-  ) {
-    this.server = server;
-    this.board = board;
-    this.socket = socket;
-  }
+  ) {}
 
   startServer() {
     this.server.init();
     this.server.start();
+  }
+
+  startDatabase() {
+    this.database.init();
   }
 
   startSocket() {
@@ -30,6 +32,7 @@ export default class App {
 
   start() {
     this.startServer();
+    this.startDatabase();
     this.startSocket();
     this.startBoard();
   }

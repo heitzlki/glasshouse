@@ -10,13 +10,7 @@ export type optionsType = {
 };
 
 export default class Board {
-  public board?: JohnnyFiveBoard;
-  public options?: optionsType;
-
-  constructor(board?: JohnnyFiveBoard, options?: optionsType) {
-    this.board = board;
-    this.options = options;
-  }
+  constructor(public board?: JohnnyFiveBoard, public options?: optionsType) {}
 
   init() {
     this.board = new JohnnyFiveBoard();
