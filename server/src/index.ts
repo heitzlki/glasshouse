@@ -2,10 +2,13 @@ import App from './App';
 
 import './config';
 
-(async () => {
-  const app = new App();
 
+const app = new App();
+
+(async () => {
   app.start();
 
   app.open();
 })();
+
+export default app
