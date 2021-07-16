@@ -13,28 +13,40 @@ export default class App {
     public socket: Socket = new Socket()
   ) {}
 
-  startServer() {
+  initServer() {
     this.server.init();
     this.server.start();
   }
 
-  startDatabase() {
+  initDatabase() {
     this.database.init();
   }
 
-  startSocket() {
+  initSocket() {
     this.socket.init();
   }
 
-  startBoard() {
+  initBoard() {
     this.board.init();
-    this.board.ready()
+    this.board.ready();
+  }
+
+  startBoard() {
+    this.board.setupDatabase();
+    this.board.storeSensor();
+    this.board.stripeSchedule();
+    this.board.activatePump();
+  }
+
+  init() {
+    this.initServer();
+    this.initDatabase();
+    this.initSocket();
+    this.initBoard();
   }
 
   start() {
-    this.startServer();
-    this.startDatabase();
-    this.startSocket();
+    // this.board.deleteData();
     this.startBoard();
   }
 
