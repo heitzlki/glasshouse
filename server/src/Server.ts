@@ -1,8 +1,7 @@
 import { GraphQLServer, Options } from 'graphql-yoga';
 import chalk from 'chalk';
 
-// import { genSchema } from '@utils/genSchema';
-import { genSchema } from './utils/genSchema';
+import { genSchema } from '@utils/genSchema';
 // import { authMiddleware } from './utils/authMiddleware';
 
 export default class Server {
