@@ -1,8 +1,3 @@
-type Schedule {
-    from: String
-    to: String
-}
-
 type StripeStatus {
   stripeStatus: {
     connected: Boolean
@@ -23,10 +18,11 @@ type StripeSchedule {
 }
 
 type Query {
-  stripeStatus: StripeStatus
+  pumpLog(previous: Boolean, from: String, to: String): [PumpLog]
+  pumpStatus: PumpStatus
 }
 
 type Mutation {
-  setStripe(state: Boolean): StripeState
+  setPump(state: Boolean): StripeState
   stripeSchedule(from: String!, to: String!): StripeSchedule
 }

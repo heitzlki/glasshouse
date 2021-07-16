@@ -1,0 +1,25 @@
+type SensorStatus {
+  sensorStatus: {
+    connected: Boolean
+    pin: Number | String
+  }
+  humidity: {
+    status: Number
+    message: String
+    current: Number
+    average: {
+      from: String
+      to: String
+      value: Number
+    }
+  }
+}
+
+type Query {
+  sensorStatus(from: String, to: String): SensorStatus
+  sensorLog()
+}
+
+type Mutation {
+  sensorInterval()
+}
