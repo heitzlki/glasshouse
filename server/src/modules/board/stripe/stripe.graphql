@@ -1,25 +1,25 @@
-type Schedule {
-    from: String
-    to: String
+type StripeSchedule {
+  active: Boolean
+  from: String
+  to: String
 }
 
 type StripeStatus {
-  stripeStatus: {
-    connected: Boolean
-    pin: Number | String
-  }
+  alert: [Alert]
+  connected: Boolean
+  pin: String
   active: Boolean
-  schedule: Schedule
+  schedule: StripeSchedule
 }
 
-type StripeState {
-  oldState: Boolean
-  newState: Boolean
+type StripeActive {
+  alert: [Alert]
+  active: Boolean
 }
 
-type StripeSchedule {
-  oldSchedule: Schedule
-  newSchedule: Schedule
+type SetStripeSchedule {
+  alert: [Alert]
+  schedule: StripeSchedule
 }
 
 type Query {
@@ -27,6 +27,10 @@ type Query {
 }
 
 type Mutation {
-  setStripe(state: Boolean): StripeState
-  stripeSchedule(from: String!, to: String!): StripeSchedule
+  setStripeActive(active: Boolean): StripeActive
+  setStripeSchedule(
+    active: Boolean!
+    from: String!
+    to: String!
+  ): SetStripeSchedule
 }
