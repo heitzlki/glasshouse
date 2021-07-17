@@ -1,25 +1,30 @@
+type SensorCalibration {
+    air: number;
+    water: number;
+}
+
 type SensorStatus {
-  sensorStatus: {
-    connected: Boolean
-    pin: Number | String
-  }
-  humidity: {
-    status: Number
-    message: String
-    current: Number
-    average: {
-      from: String
-      to: String
-      value: Number
-    }
-  }
+  connected: boolean;
+  pin: string;
+  interval: number;
+  calibration: SensorCalibration
+}
+
+type SetSensorInterval {
+  alert: [Alert]
+  interval: Number
+}
+
+type SetSensorCalibration {
+  alert: [Alert]
+  calibration: SensorCalibration
 }
 
 type Query {
-  sensorStatus(from: String, to: String): SensorStatus
-  sensorLog()
+  sensorStatus: SensorStatus
 }
 
 type Mutation {
-  sensorInterval()
+  setSensorInterval(interval: Number): SetSensorInterval
+  setSensorCalibration(air: Number, water: Number): SetSensorCalibration
 }
