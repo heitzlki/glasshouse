@@ -1,28 +1,74 @@
-type StripeStatus {
-  stripeStatus: {
-    connected: Boolean
-    pin: Number | String
-  }
+type PumpSensor {
   active: Boolean
-  schedule: Schedule
+  average: {
+    value: Number
+    for: Number
+  }
 }
 
-type StripeState {
-  oldState: Boolean
-  newState: Boolean
+type PumpRefill {
+  active: Boolean
+  average: {
+    value: Number
+    for: Number
+  }
 }
 
-type StripeSchedule {
-  oldSchedule: Schedule
-  newSchedule: Schedule
+type PumpSchedule {
+  active: Boolean
+  cron: String
+  duration: String
+}
+
+type PumpStatus {
+  alert: [Alert]
+  connected: Boolean
+  pin: String
+  active: Boolean
+  sensor:PumpSensor
+  refill: PumpRefill
+  schedule: PumpSchedule
+}
+
+type PumpActive {
+  alert: [Alert]
+  active: Boolean
+}
+
+type SetPumpSchedule {
+  alert: [Alert]
+  schedule: PumpSensor
+}
+
+type SetPumpSensor {
+  alert: [Alert]
+  sensor: PumpSensor
+}
+
+type SetPumpSensor {
+  alert: [Alert]
+  refill: PumpRefill
 }
 
 type Query {
-  pumpLog(previous: Boolean, from: String, to: String): [PumpLog]
   pumpStatus: PumpStatus
 }
 
 type Mutation {
-  setPump(state: Boolean): StripeState
-  stripeSchedule(from: String!, to: String!): StripeSchedule
+  setPumpActive(active: Boolean): PumpActive
+  setPumpSchedule(
+    active: Boolean
+    cron: Boolean
+    duration: String
+  ): SetPumpSchedule
+  setPumpSensor(
+    avtive: Boolean 
+    value: Number 
+    for: Number
+  ): SetPumpSensor
+  setPumprefill(
+    avtive: Boolean 
+    value: Number 
+    for: Number
+  ): SetPumpRefill
 }
