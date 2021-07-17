@@ -1,0 +1,74 @@
+type PumpSensor {
+  active: Boolean
+  average: {
+    value: Number
+    for: Number
+  }
+}
+
+type PumpRefill {
+  active: Boolean
+  average: {
+    value: Number
+    for: Number
+  }
+}
+
+type PumpSchedule {
+  active: Boolean
+  cron: String
+  duration: String
+}
+
+type PumpStatus {
+  alert: [Alert]
+  connected: Boolean
+  pin: String
+  active: Boolean
+  sensor:PumpSensor
+  refill: PumpRefill
+  schedule: PumpSchedule
+}
+
+type PumpActive {
+  alert: [Alert]
+  active: Boolean
+}
+
+type SetPumpSchedule {
+  alert: [Alert]
+  schedule: PumpSensor
+}
+
+type SetPumpSensor {
+  alert: [Alert]
+  sensor: PumpSensor
+}
+
+type SetPumpSensor {
+  alert: [Alert]
+  refill: PumpRefill
+}
+
+type Query {
+  pumpStatus: PumpStatus
+}
+
+type Mutation {
+  setPumpActive(active: Boolean): PumpActive
+  setPumpSchedule(
+    active: Boolean
+    cron: Boolean
+    duration: String
+  ): SetPumpSchedule
+  setPumpSensor(
+    avtive: Boolean 
+    value: Number 
+    for: Number
+  ): SetPumpSensor
+  setPumprefill(
+    avtive: Boolean 
+    value: Number 
+    for: Number
+  ): SetPumpRefill
+}

@@ -1,13 +1,15 @@
+import app from '@index';
+
 import chalk from 'chalk';
 import cron from 'node-cron';
+import moment from 'moment';
 import { Board as JohnnyFiveBoard, Pin, Sensor } from 'johnny-five';
 
 import { BoardModel } from '@models/board/board.model';
 import { IBoardDocument } from '@models/board/board.types';
-import moment from 'moment';
-import app from '@index';
-import SensorLog from '@models/sensor';
-import PumpLog from '@models/pump';
+import { SensorModel } from '@models/sensor/sensor.model';
+import { PumpModel } from '@models/pump/pump.model';
+
 import reMap from '@utils/reMap';
 
 export type optionsType = {
@@ -154,7 +156,7 @@ export default class Board {
       if (this.sensor && app.socket.io) {
         let valueInPercent = this.reMapSensorData(this.sensor.value);
         app.socket.send('sensor', valueInPercent);
-        await SensorLog.create({
+        await SensorModel.create({
           humidity: valueInPercent,
         });
       }
@@ -260,7 +262,7 @@ export default class Board {
     // Checks every 5 sec if the pump needs to be activated
     setInterval(async () => {
       if (this.currentBoard && this.currentBoard.pump.sensor.active) {
-        let sensorData = await SensorLog.find({
+        let sensorData = await SensorModel.find({
           timestamp: {
             $gte:
               new Date().getTime() - this.currentBoard.pump.sensor.average.for,
@@ -299,7 +301,7 @@ export default class Board {
 
   async deleteData() {
     await BoardModel.deleteMany({});
-    await PumpLog.deleteMany({});
-    await SensorLog.deleteMany({});
+    await PumpModel.deleteMany({});
+    await SensorModel.deleteMany({});
   }
 }

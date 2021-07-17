@@ -1,0 +1,30 @@
+type SensorCalibration {
+    air: number;
+    water: number;
+}
+
+type SensorStatus {
+  connected: boolean;
+  pin: string;
+  interval: number;
+  calibration: SensorCalibration
+}
+
+type SetSensorInterval {
+  alert: [Alert]
+  interval: Number
+}
+
+type SetSensorCalibration {
+  alert: [Alert]
+  calibration: SensorCalibration
+}
+
+type Query {
+  sensorStatus: SensorStatus
+}
+
+type Mutation {
+  setSensorInterval(interval: Number): SetSensorInterval
+  setSensorCalibration(air: Number, water: Number): SetSensorCalibration
+}

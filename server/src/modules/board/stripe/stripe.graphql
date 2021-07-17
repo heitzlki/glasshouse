@@ -1,0 +1,36 @@
+type StripeSchedule {
+  active: Boolean
+  from: String
+  to: String
+}
+
+type StripeStatus {
+  alert: [Alert]
+  connected: Boolean
+  pin: String
+  active: Boolean
+  schedule: StripeSchedule
+}
+
+type StripeActive {
+  alert: [Alert]
+  active: Boolean
+}
+
+type SetStripeSchedule {
+  alert: [Alert]
+  schedule: StripeSchedule
+}
+
+type Query {
+  stripeStatus: StripeStatus
+}
+
+type Mutation {
+  setStripeActive(active: Boolean): StripeActive
+  setStripeSchedule(
+    active: Boolean!
+    from: String!
+    to: String!
+  ): SetStripeSchedule
+}
