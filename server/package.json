@@ -43,6 +43,7 @@
     "@Database": "src/Database.ts",
     "@Board": "src/Board.ts",
     "@Socket": "src/Socket.ts",
+    "@board": "src/board",
     "@models": "src/models",
     "@utils": "src/utils"
   }
