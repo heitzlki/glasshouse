@@ -8,6 +8,8 @@ type corsType = {
   methods: Array<methodsType>;
 };
 
+export type eventType = 'sensor' | 'pump' | 'stripe' | 'board';
+
 export default class Socket {
   constructor(
     public io?: Server,
@@ -54,7 +56,7 @@ export default class Socket {
     }
   }
 
-  send(event: string, message: any) {
+  send(event: eventType, message: any) {
     if (this.io) {
       this.io.on('connection', (socket) => {
         if (this.io) {
