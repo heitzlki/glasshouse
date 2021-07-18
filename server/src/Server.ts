@@ -5,33 +5,23 @@ import { genSchema } from '@utils/genSchema';
 // import { authMiddleware } from './utils/authMiddleware';
 
 export default class Server {
-  public server?: GraphQLServer;
-
-  public cors?: { credentials: boolean; origin: string } = {
-    credentials: true,
-    origin:
-      process.env.NODE_ENV === 'dev'
-        ? '*'
-        : `http://${process.env.CLIENT_HOST}:${process.env.CLIENT_PORT}/`,
-  };
-
-  public options?: Options = {
-    cors: this.cors,
-    port: process.env.PORT,
-    endpoint: '/graphql',
-    subscriptions: '/subscriptions',
-    playground: '/playground',
-  };
-
   constructor(
-    server?: GraphQLServer,
-    cors?: { credentials: boolean; origin: string },
-    options?: Options
-  ) {
-    this.server = server;
-    this.cors = cors;
-    this.options = options;
-  }
+    public server?: GraphQLServer,
+    public cors: { credentials: boolean; origin: string } = {
+      credentials: true,
+      origin:
+        process.env.NODE_ENV === 'dev'
+          ? '*'
+          : `http://${process.env.CLIENT_HOST}:${process.env.CLIENT_PORT}/`,
+    },
+    public options: Options = {
+      cors: cors,
+      port: process.env.PORT,
+      endpoint: '/graphql',
+      subscriptions: '/subscriptions',
+      playground: '/playground',
+    }
+  ) {}
 
   init() {
     this.server = new GraphQLServer({
